@@ -1,13 +1,12 @@
 # vue-calendar
 
-基于vuejs+webpack环境使用的日期选择插件
+基于vuejs+webpack环境使用的日期选择插件,QQ讨论群: 240319632。
 
 * 支持`单选`和`多选`日期
 * 支持限定`开始`和`结束`日期范围选择。
 * 支持小时分钟
 * 需要引入`fontawesome.io` 的图标库。
 
-QQ群: 240319632
 
 ![](http://ww1.sinaimg.cn/large/823603acgw1ez1n57t8jug20d40acwjw.gif)
 
@@ -15,14 +14,14 @@ QQ群: 240319632
 
 
 # Options
-:show    是否显示
-:type    date|datetime
-:value	默认值
-:begin  可选开始时间
-:end    可选结束时间
-:x      显示x坐标
-:y      显示y坐标
-:range  是否多选
+* :show    是否显示
+* :type    date|datetime
+* :value	默认值
+* :begin  可选开始时间
+* :end    可选结束时间
+* :x      显示x坐标
+* :y      显示y坐标
+* :range  是否多选
 
 # test.vue
 
