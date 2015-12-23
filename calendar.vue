@@ -78,10 +78,12 @@ module.exports = {
             type: Boolean
         },
         rangeBegin:{
-            type: Array
+            type: Array,
+            default:[]
         },
         rangeEnd:{
-            type: Array
+            type: Array,
+            default:[]
         }
     },
     data:function(){
