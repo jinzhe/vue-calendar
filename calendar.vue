@@ -62,11 +62,13 @@ module.exports = {
         },
         x: {
             type: Number,
-            required: true  
+            required: true,
+            default:0 
         },
         y: {
             type: Number,
-            required: true  
+            required: true,
+            default:0
         }, 
         begin: {
             type: String
@@ -75,7 +77,8 @@ module.exports = {
             type: String 
         },
         range: {
-            type: Boolean
+            type: Boolean,
+            default:false
         },
         rangeBegin:{
             type: Array,
@@ -377,7 +380,12 @@ module.exports = {
     line-height: 32px;
     color:#5e7a88;
 }
-
+.calendar-tools .float.left{
+    float:left;
+}
+.calendar-tools .float.right{
+    float:right;
+}
 .calendar-tools input{
     font-size: 20px;
     line-height: 32px;
@@ -455,6 +463,7 @@ module.exports = {
 }
 
 .calendar-button button{
+    border:none;
     cursor: pointer;
     display: inline-block;
     min-height: 1em;
