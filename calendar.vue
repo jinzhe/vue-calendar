@@ -48,33 +48,33 @@ module.exports = {
     props: {
         show: {
             type: Boolean,
-            required: true,
-            twoWay: true    
+            twoWay: true,
+            default:false   
         },
         type: {
             type: String,
-            required: true  
+            default:"date" 
         },
         value: {
             type: String,
-            required: true,
-            twoWay: true    
+            twoWay: true,
+            default:""   
         },
         x: {
             type: Number,
-            required: true,
             default:0 
         },
         y: {
             type: Number,
-            required: true,
             default:0
         }, 
         begin: {
-            type: String
+            type: String,
+            default:""
         }, 
         end: {
-            type: String 
+            type: String,
+            default:""
         },
         range: {
             type: Boolean,
@@ -82,11 +82,11 @@ module.exports = {
         },
         rangeBegin:{
             type: Array,
-            default:[]
+            default:Array
         },
         rangeEnd:{
             type: Array,
-            default:[]
+            default:Array
         }
     },
     data:function(){
@@ -105,7 +105,7 @@ module.exports = {
             months:['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
         }
     },
-    ready:function(){
+    created:function(){
         var that=this;
         var now = new Date();
         if(that.value!=""){
@@ -147,12 +147,16 @@ module.exports = {
             that.minute = that.zero(now.getMinutes());
             that.second = that.zero(now.getSeconds());
             if(that.range){
-                that.rangeBegin=[];
-                that.rangeEnd=[];
+                that.rangeBegin=Array;
+                that.rangeEnd=Array;
             }
         }
         that.render(that.year,that.month);
-
+    },
+    watch:{
+        year:function(val,old){
+            console.log("new %s old %s time:%s",val,old,+new Date);
+        }
     },
     methods:{
         zero:function(n){
@@ -160,13 +164,11 @@ module.exports = {
         },
         render:function(y,m){
             var that=this;
-            var d = new Date(),
-            firstDayOfMonth = new Date(y, m, 1).getDay(),//当月第一天
-            lastDateOfMonth = new Date(y, m + 1, 0).getDate(),//当月最后一天
-            lastDayOfLastMonth = m == 0 ? new Date(y - 1, 11, 0).getDate() : new Date(y, m, 0).getDate();//最后一月的最后一天
+            var firstDayOfMonth = new Date(y, m, 1).getDay();//当月第一天
+            var lastDateOfMonth = new Date(y, m + 1, 0).getDate();//当月最后一天
+            var lastDayOfLastMonth = new Date(y, m, 0).getDate();//最后一月的最后一天
             that.year=y;
             that.currentMonth=that.months[m];
-
             var seletSplit=that.value.split(" ")[0].split(that.sep);
             var i,line=0,temp=[];
             for(i=1;i <= lastDateOfMonth;i++) {
@@ -276,8 +278,6 @@ module.exports = {
         select:function(k1,k2,e){
             if(e!=undefined)e.stopPropagation();
             var that=this;
-
-            
             // 日期范围
             if(that.range){
                 if(that.rangeBegin.length==0||that.rangeEndTemp!=0){
@@ -340,7 +340,7 @@ module.exports = {
 }
 </script>
  
-<style>
+<style scope>
 .calendar {
     width: 300px;
     padding: 10px;
