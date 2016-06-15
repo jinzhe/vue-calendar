@@ -5,7 +5,7 @@
             <i class="fa fa-angle-right float right" @click="next"  @touchstart="next"></i>
             <div class="text center">
                 <input type="number" v-model="year" value="{{year}}" @change="render(year,month)" min="1970" max="2100" maxlength="4" number>
-                 / 
+                 /
                 {{month+1}}
             </div>
         </div>
@@ -16,8 +16,8 @@
             </tr>
          </thead>
         <tr v-for="(k1,day) in days">
-            <td 
-            v-for="(k2,child) in day" 
+            <td
+            v-for="(k2,child) in day"
             :class="{'today':child.today,'disabled':child.disabled}"
             @click="select(k1,k2,$event)" @touchstart="select(k1,k2,$event)">
             {{child.day}}
@@ -26,7 +26,7 @@
         </tr>
         </table>
         <div class="calendar-time" v-show="type=='datetime'||type=='time'">
- 
+
             <div class="timer">
                 <input type="number" v-model="hour" value="{{hour}}" min="0" max="23" maxlength="2" number>
                 时
@@ -37,8 +37,8 @@
             </div>
         </div>
         <div class="calendar-button" v-show="type=='datetime'||type=='time'||range">
-            <button @click="ok">确定</button>
-            <button @click="cancel" class="cancel">取消</button>
+            <button type="button" @click="ok">确定</button>
+            <button type="button" @click="cancel" class="cancel">取消</button>
         </div>
     </div>
 </template>
@@ -49,29 +49,29 @@ module.exports = {
         show: {
             type: Boolean,
             twoWay: true,
-            default:false   
+            default:false
         },
         type: {
             type: String,
-            default:"date" 
+            default:"date"
         },
         value: {
             type: String,
             twoWay: true,
-            default:""   
+            default:""
         },
         x: {
             type: Number,
-            default:0 
+            default:0
         },
         y: {
             type: Number,
             default:0
-        }, 
+        },
         begin: {
             type: String,
             default:""
-        }, 
+        },
         end: {
             type: String,
             default:""
@@ -111,7 +111,7 @@ module.exports = {
         if(that.value!=""){
             if(that.value.indexOf("-")!=-1)that.sep="-";
             if(that.value.indexOf(".")!=-1)that.sep=".";
- 
+
             if(that.type=="date"){
                 var split=that.value.split(that.sep);
                 that.year = parseInt(split[0]);
@@ -185,29 +185,29 @@ module.exports = {
                         k++;
                     }
                 }
- 
+
                 // 如果是日期范围
                 if(that.range){
-                      
+
                     var options={day:i};
-       
+
                     if(that.rangeBegin.length>0){
                         var beginTime=Number(new Date(that.rangeBegin[0],that.rangeBegin[1],that.rangeBegin[2]));
                         var endTime=Number(new Date(that.rangeEnd[0],that.rangeEnd[1],that.rangeEnd[2]));
                         var thisTime=Number(new Date(that.year,that.month,i));
- 
+
                         if(beginTime<=thisTime&&endTime>=thisTime){
                             options.today=true;
                         }
                     }
                     temp[line].push(options);
                 }else{
-                   
+
                     var chk = new Date();
                     var chkY = chk.getFullYear();
                     var chkM = chk.getMonth();
                     if(
-                        parseInt(seletSplit[0])==that.year 
+                        parseInt(seletSplit[0])==that.year
                         &&
                         parseInt(seletSplit[1])-1==that.month
                         &&
@@ -237,9 +237,9 @@ module.exports = {
                             if(endTime<thisTime)options.disabled=true;
                         }
                         temp[line].push(options);
-                    }   
+                    }
                 }
-               
+
                 // 最后一行
                 if (dow == 6) {
                     line++;
@@ -298,7 +298,7 @@ module.exports = {
             }else{
                 // 取消上次选中
                 if(that.today.length>0){
-                    that.days[that.today[0]][that.today[1]].today=false; 
+                    that.days[that.today[0]][that.today[1]].today=false;
                 }
                  // 设置当前选中天
                 that.days[k1][k2].today=true;
@@ -306,7 +306,7 @@ module.exports = {
                 that.today=[k1,k2];
                 if(that.type=='date'){
                     that.value=that.year+that.sep+that.zero(that.month+1)+that.sep+that.zero(that.days[k1][k2].day);
-                    that.show=false;   
+                    that.show=false;
                 }
             }
 
@@ -339,7 +339,7 @@ module.exports = {
     }
 }
 </script>
- 
+
 <style scope>
 .calendar {
     width: 300px;
@@ -351,7 +351,7 @@ module.exports = {
     opacity:.95;
     transition: all .5s ease;
 }
- 
+
 .calendar-enter, .calendar-leave {
     opacity: 0;
     transform: translate3d(0,-10px, 0);
@@ -426,7 +426,7 @@ module.exports = {
 }
 .calendar td.week{
     pointer-events:none !important;
-    cursor: default !important;    
+    cursor: default !important;
 }
 .calendar td.disabled {
     color: #c0c0c0;
@@ -486,9 +486,9 @@ module.exports = {
 .calendar .lunar{
      font-size:11px;
      line-height: 150%;
-     color:#aaa;   
+     color:#aaa;
 }
 .calendar td.today .lunar{
-     color:#fff;   
+     color:#fff;
 }
 </style>
