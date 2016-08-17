@@ -70,10 +70,12 @@ module.exports = {
         }, 
         begin: {
             type: String,
+            twoWay: true,
             default:""
         }, 
         end: {
             type: String,
+            twoWay: true,
             default:""
         },
         range: {
@@ -315,6 +317,8 @@ module.exports = {
             var that=this;
             if(that.range){
                 that.value=that.output(that.rangeBegin)+" ~ "+that.output(that.rangeEnd);
+                that.begin=that.output(that.rangeBegin);
+                that.end=that.output(that.rangeEnd);
             }else{
                 that.value=that.output([that.year,that.month,that.day,that.hour,that.minute,that.second]);
             }
