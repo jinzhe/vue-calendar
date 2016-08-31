@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Web App">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>vue-calendar</title>
+{% for (var css in o.htmlWebpackPlugin.files.css) { %}<link href="{%=o.htmlWebpackPlugin.files.css[css] %}" rel="stylesheet">
+{% } %}
+</head>
+<body>
+<div id="app"></div>
+{% for (var chunk in o.htmlWebpackPlugin.files.chunks) { %}
+<script src="{%=o.htmlWebpackPlugin.files.chunks[chunk].entry %}"></script>{% } %}
+</body>
+</html>
