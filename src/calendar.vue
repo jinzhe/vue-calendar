@@ -80,9 +80,7 @@
     line-height: 125%;
     cursor: pointer;
 }
-.calendar td:hover{
-    background:#f3f8fa;
-}
+
 .calendar td.week{
     pointer-events:none !important;
     cursor: default !important;    
@@ -92,16 +90,25 @@
     pointer-events:none !important;
     cursor: default !important;
 }
-
-.calendar td.selected span{
+.calendar td span{
     display:block;
     height:30px;
     line-height:30px;
     margin:2px;
     border-radius:2px;
+}
+.calendar td span:hover{
+    background:#f3f8fa;
+}
+.calendar td.selected span{
     background-color: #5e7a88;
     color: #fff;
 }
+.calendar td.selected span:hover{
+    background-color: #5e7a88;
+    color: #fff;
+}
+
 .calendar thead td {
   text-transform: uppercase;
 }
@@ -126,12 +133,11 @@
     text-align: center;
 }
 
-.calendar-button button{
-    border:none;
+.calendar-button span{
     cursor: pointer;
     display: inline-block;
     min-height: 1em;
-    min-width: 8em;
+    min-width: 5em;
     vertical-align: baseline;
     background:#5e7a88;
     color:#fff;
@@ -142,7 +148,7 @@
     text-align: center;
     border-radius: .3em;
 }
-.calendar-button button.cancel{
+.calendar-button span.cancel{
     background:#efefef;
     color:#666;
 }
@@ -202,8 +208,8 @@
             </div>
         </div>
         <div class="calendar-button" v-show="type=='datetime'||type=='time'||range">
-            <button @click="ok">确定</button>
-            <button @click="cancel" class="cancel">取消</button>
+            <span @click="ok">确定</span>
+            <span @click="cancel" class="cancel">取消</span>
         </div>
     </div>
 </template>
