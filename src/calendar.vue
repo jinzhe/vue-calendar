@@ -532,7 +532,12 @@ export default {
             } else {
                 // 取消上次选中
                 if (this.today.length > 0) {
-                    this.days[this.today[0]][this.today[1]].selected = false
+                    this.days.forEach(v=>{
+                        v.forEach(vv=>{
+                            vv.selected= false
+                        })
+                    })
+                    // this.days[this.today[0]][this.today[1]].selected = false
                 }
                 // 设置当前选中天
                 this.days[k1][k2].selected = true
