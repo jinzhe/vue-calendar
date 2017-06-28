@@ -1,11 +1,11 @@
-# Vue-Calendar
+# Vue Calendar
 
 > A calendar components for Vue.js.
 
-## Live Demo
+### Live Demo
 > http://jinzhe.github.io/vue-calendar/
 
-## Getting Started
+### Getting Started
 
 ``` html
 <template>
@@ -18,12 +18,12 @@
         </div>
 
         <div>
-            <span>单选/农历</span>
+            <span>单选/英文</span>
             <calendar :lunar="calendar1.lunar" :value="calendar1.value" :begin="calendar1.begin" :end="calendar1.end" :weeks="calendar1.weeks" :months="calendar1.months" @select="calendar1.select"></calendar>
         </div>
 
         <div>
-            <span>多选/英文/无农历</span>
+            <span>多选/农历</span>
             <calendar :range="calendar2.range" :lunar="calendar2.lunar" :value="calendar2.value" :begin="calendar2.begin" :end="calendar2.end" @select="calendar2.select"></calendar>
         </div>
     </div>
@@ -198,14 +198,14 @@ export default {
 </style>
 ```
 
-## Features
+### Features
 - You can limit the start and end dates.
 - Customize week and month headlines.
 - Support show Chinese lunar calendar, Chinese festivals, international festivals
 - Support for custom presentation.
 - Support multiple choice
 
-## Build Setup
+### Build Setup
 
 ``` bash
 # install dependencies
