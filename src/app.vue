@@ -8,12 +8,12 @@
         </div>
 
         <div>
-            <span>单选/农历</span>
+            <span>单选/英文</span>
             <calendar :lunar="calendar1.lunar" :value="calendar1.value" :begin="calendar1.begin" :end="calendar1.end" :weeks="calendar1.weeks" :months="calendar1.months" @select="calendar1.select"></calendar>
         </div>
 
         <div>
-            <span>多选/英文/无农历</span>
+            <span>多选/农历</span>
             <calendar :range="calendar2.range" :lunar="calendar2.lunar" :value="calendar2.value" :begin="calendar2.begin" :end="calendar2.end" @select="calendar2.select"></calendar>
         </div>
     </div>
