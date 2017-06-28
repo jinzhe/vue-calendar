@@ -2,6 +2,9 @@
 
 > A calendar components for Vue.js.
 
+![](http://ww1.sinaimg.cn/large/823603acgy1fh120p4bigg20b50c1wq4.gif)
+
+
 ### Live Demo
 > http://jinzhe.github.io/vue-calendar/
 
