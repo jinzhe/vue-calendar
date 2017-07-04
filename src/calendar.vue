@@ -39,6 +39,7 @@
             <tr v-for="(day,k1) in days">
                 <td v-for="(child,k2) in day" :class="{'selected':child.selected,'disabled':child.disabled}" @click="select(k1,k2,$event)">
                     <span :class="{'red':k2==0||k2==6||((child.isLunarFestival||child.isGregorianFestival) && lunar)}">{{child.day}}</span>
+                    <div class="text" v-if="child.eventName!=undefined">{{child.eventName}}</div>
                     <div class="text" :class="{'isLunarFestival':child.isLunarFestival,'isGregorianFestival':child.isGregorianFestival}" v-if="lunar">{{child.lunar}}</div>
                 </td>
             </tr>
@@ -94,7 +95,13 @@ export default {
             default:function(){
                 return window.navigator.language.toLowerCase() == "zh-cn"?['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']:['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
             }
-        }
+        },
+        events:  {
+            type: Object,
+            default: function(){
+                return {}
+            }
+        },
     },
     data() {
         return {
@@ -192,7 +199,8 @@ export default {
                         // console.log("第一行",lunarYear,lunarMonth,lunarValue,lunarInfo)
                         temp[line].push(Object.assign(
                             {day: k,disabled: true},
-                            this.getLunarInfo(this.month==0?this.year-1:this.year,this.month==0?12:this.month,k)
+                            this.getLunarInfo(this.month==0?this.year-1:this.year,this.month==0?12:this.month,k),
+                            this.getEvents(this.month==0?this.year-1:this.year,this.month==0?12:this.month,k),
                         ))
                         k++;
                     }
@@ -201,7 +209,11 @@ export default {
                 // 范围
                 if (this.range) {
                     // console.log("日期范围",this.getLunarInfo(this.year,this.month+1,i))
-                    let options = Object.assign({day: i},this.getLunarInfo(this.year,this.month+1,i))
+                    let options = Object.assign(
+                        {day: i},
+                        this.getLunarInfo(this.year,this.month+1,i),
+                        this.getEvents(this.year,this.month+1,i),
+                     )
                     if (this.rangeBegin.length > 0) {
                         let beginTime = Number(new Date(this.rangeBegin[0], this.rangeBegin[1], this.rangeBegin[2]))
                         let endTime = Number(new Date(this.rangeEnd[0], this.rangeEnd[1], this.rangeEnd[2]))
@@ -230,7 +242,8 @@ export default {
                         // console.log("匹配上次选中的日期",lunarYear,lunarMonth,lunarValue,lunarInfo)
                         temp[line].push(Object.assign(
                             {day: i,selected: true},
-                            this.getLunarInfo(this.year,this.month+1,i)
+                            this.getLunarInfo(this.year,this.month+1,i),
+                            this.getEvents(this.year,this.month+1,i),
                         ))
                         this.today = [line, temp[line].length - 1]
                     }
@@ -240,13 +253,18 @@ export default {
                         // console.log("今天",lunarYear,lunarMonth,lunarValue,lunarInfo)
                         temp[line].push(Object.assign(
                             {day: i,selected: true},
-                            this.getLunarInfo(this.year,this.month+1,i)
+                            this.getLunarInfo(this.year,this.month+1,i),
+                            this.getEvents(this.year,this.month+1,i),
                         ))
                         this.today = [line, temp[line].length - 1]
                     }else{
                         // 普通日期
                         // console.log("设置可选范围",i,lunarYear,lunarMonth,lunarValue,lunarInfo)
-                        let options = Object.assign({day: i,selected:false},this.getLunarInfo(this.year,this.month+1,i))
+                        let options = Object.assign(
+                            {day: i,selected:false},
+                            this.getLunarInfo(this.year,this.month+1,i),
+                            this.getEvents(this.year,this.month+1,i),
+                        )
                         if (this.begin.length>0) {
                             let beginTime = Number(new Date(parseInt(this.begin[0]),parseInt(this.begin[1]) - 1,parseInt(this.begin[2])))
                             if (beginTime > Number(new Date(this.year, this.month, i))) options.disabled = true
@@ -267,7 +285,8 @@ export default {
                         // console.log("最后一行",lunarYear,lunarMonth,lunarValue,lunarInfo)
                         temp[line].push(Object.assign(
                             {day: k,disabled: true},
-                            this.getLunarInfo(this.month+2>11?this.year+1:this.year,this.month+2>11?1:this.month+2,k)
+                            this.getLunarInfo(this.month+2>11?this.year+1:this.year,this.month+2>11?1:this.month+2,k),
+                            this.getEvents(this.month+2>11?this.year+1:this.year,this.month+2>11?1:this.month+2,k),
                         ))
                         k++
                     }
@@ -277,8 +296,8 @@ export default {
         },
         // 获取农历信息
         getLunarInfo(y,m,d){
-            let lunarInfo=calendar.solar2lunar(y,m,d);
-            let lunarValue=lunarInfo.IDayCn;
+            let lunarInfo=calendar.solar2lunar(y,m,d)
+            let lunarValue=lunarInfo.IDayCn
             // console.log(lunarInfo)
             let isLunarFestival=false
             let isGregorianFestival=false
@@ -294,6 +313,16 @@ export default {
                 isLunarFestival:isLunarFestival,
                 isGregorianFestival:isGregorianFestival,
             }
+        },
+        // 获取自定义事件
+        getEvents(y,m,d){
+            if(Object.keys(this.events).length==0)return false;
+            if(this.events[y+"-"+m+"-"+d]!=undefined){
+                return {
+                    eventName:this.events[y+"-"+m+"-"+d]
+                }
+            }
+            return {}
         },
         // 上月
         prev(e) {

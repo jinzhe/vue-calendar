@@ -8,8 +8,8 @@
         </div>
 
         <div>
-            <span>单选/英文</span>
-            <calendar :lunar="calendar1.lunar" :value="calendar1.value" :begin="calendar1.begin" :end="calendar1.end" :weeks="calendar1.weeks" :months="calendar1.months" @select="calendar1.select"></calendar>
+            <span>单选/英文/事件</span>
+            <calendar :events="calendar1.events" :lunar="calendar1.lunar" :value="calendar1.value" :begin="calendar1.begin" :end="calendar1.end" :weeks="calendar1.weeks" :months="calendar1.months" @select="calendar1.select"></calendar>
         </div>
 
         <div>
@@ -53,6 +53,9 @@ export default {
                 // lunar:true, //显示农历
                 weeks:['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
                 months:['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                events:{
+                    '2018-2-14':'$408','2018-2-15':'$460','2018-2-16':'$500',
+                },
                 select(value){
                     console.log(value.toString());
                 }
@@ -63,7 +66,6 @@ export default {
                 lunar:true, //显示农历
                 begin:[2017,2,16], //可选开始日期
                 end:[2019,2,16], //可选结束日期
-
                 select(begin,end){
                     // console.log(begin.toString(),end.toString());
                 }
@@ -142,6 +144,7 @@ export default {
     margin:10px;
     padding:20px;
     width:25%;
+    min-width:300px;
     border: 1px solid #eee;
     border-radius: 2px;
     position: relative;
