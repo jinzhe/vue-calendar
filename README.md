@@ -261,6 +261,7 @@ export default {
 - :lunar Bool default:false * Show Chinese Lunar
 - :weeks Array * According to the system language changes or custom
 - :months Array * According to the system language changes or custom
+- :events Object * Customize calendar events
 
 ### Features
 - You can limit the start and end dates.
