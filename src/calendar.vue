@@ -189,7 +189,7 @@ export default {
             let lastDayOfLastMonth = new Date(y, m, 0).getDate()     //最后一月的最后一天
             this.year = y
             let seletSplit = this.value
-            let i, line = 0,temp = []
+            let i, line = 0,temp = [],nextMonthPushDays = 1
             for (i = 1; i <= lastDateOfMonth; i++) {
                 let dow = new Date(y, m, i).getDay()
                 let k
@@ -294,8 +294,21 @@ export default {
                         ))
                         k++
                     }
+                    nextMonthPushDays=k
                 }
             } //end for
+ 
+            // 补充第六行让视觉稳定
+            if(line >=4){
+                temp[5] = []
+                for (let d=nextMonthPushDays; d <= nextMonthPushDays+6; d++) {
+                    temp[5].push(Object.assign(
+                        {day: d,disabled: true},
+                        this.getLunarInfo(this.month+2>11?this.year+1:this.year,this.month+2>11?1:this.month+2,d),
+                        this.getEvents(this.month+2>11?this.year+1:this.year,this.month+2>11?1:this.month+2,d),
+                    ))
+                } 
+            }
             this.days = temp
         },
         // 获取农历信息
