@@ -1,51 +1,53 @@
 <template>
     <div class="calendar">
-        <div>
-            <div class="calendar-tools">
-                <span class="calendar-prev" @click="prev">
-                    <svg width="20" height="20" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <g class="transform-group">
-                        <g transform="scale(0.015625, 0.015625)">
-                            <path d="M671.968 912c-12.288 0-24.576-4.672-33.952-14.048L286.048 545.984c-18.752-18.72-18.752-49.12 0-67.872l351.968-352c18.752-18.752 49.12-18.752 67.872 0 18.752 18.72 18.752 49.12 0 67.872l-318.016 318.048 318.016 318.016c18.752 18.752 18.752 49.12 0 67.872C696.544 907.328 684.256 912 671.968 912z" fill="#5e7a88"></path>
-                        </g>
-                    </g>
-                    </svg>
-                </span>
-                <span class="calendar-next"  @click="next">
-                    <svg width="20" height="20" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <g class="transform-group">
-                        <g transform="scale(0.015625, 0.015625)">
-                            <path d="M761.056 532.128c0.512-0.992 1.344-1.824 1.792-2.848 8.8-18.304 5.92-40.704-9.664-55.424L399.936 139.744c-19.264-18.208-49.632-17.344-67.872 1.888-18.208 19.264-17.376 49.632 1.888 67.872l316.96 299.84-315.712 304.288c-19.072 18.4-19.648 48.768-1.248 67.872 9.408 9.792 21.984 14.688 34.56 14.688 12 0 24-4.48 33.312-13.44l350.048-337.376c0.672-0.672 0.928-1.6 1.6-2.304 0.512-0.48 1.056-0.832 1.568-1.344C757.76 538.88 759.2 535.392 761.056 532.128z" fill="#5e7a88"></path>
-                        </g>
-                    </g>
-                    </svg>
-                </span>
-                <div class="calendar-info">
-                    <!-- {{monthString}} -->
-                    <div class="month">
-                        <div class="month-inner" :style="{'top':-(this.month*20)+'px'}">
-                            <span v-for="m in months">{{m}}</span>
-                        </div>
-                    </div>
-                    <div class="year">{{year}}</div>
-                </div>
-            </div>
-            <table cellpadding="5">
-            <thead>
-                <tr>
-                    <td v-for="week in weeks" class="week">{{week}}</td>
-                </tr>
-            </thead>
-            <tr v-for="(day,k1) in days">
-                <td v-for="(child,k2) in day" :class="{'selected':child.selected,'disabled':child.disabled}" @click="select(k1,k2,$event)">
-                    <span :class="{'red':k2==0||k2==6||((child.isLunarFestival||child.isGregorianFestival) && lunar)}">{{child.day}}</span>
-                    <div class="text" v-if="child.eventName!=undefined">{{child.eventName}}</div>
-                    <div class="text" :class="{'isLunarFestival':child.isLunarFestival,'isGregorianFestival':child.isGregorianFestival}" v-if="lunar">{{child.lunar}}</div>
-                </td>
-            </tr>
-            </table>
-        </div>
  
+        <div class="calendar-tools">
+            <span class="calendar-prev" @click="prev">
+                <svg width="20" height="20" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <g class="transform-group">
+                    <g transform="scale(0.015625, 0.015625)">
+                        <path d="M671.968 912c-12.288 0-24.576-4.672-33.952-14.048L286.048 545.984c-18.752-18.72-18.752-49.12 0-67.872l351.968-352c18.752-18.752 49.12-18.752 67.872 0 18.752 18.72 18.752 49.12 0 67.872l-318.016 318.048 318.016 318.016c18.752 18.752 18.752 49.12 0 67.872C696.544 907.328 684.256 912 671.968 912z" fill="#5e7a88"></path>
+                    </g>
+                </g>
+                </svg>
+            </span>
+            <span class="calendar-next"  @click="next">
+                <svg width="20" height="20" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <g class="transform-group">
+                    <g transform="scale(0.015625, 0.015625)">
+                        <path d="M761.056 532.128c0.512-0.992 1.344-1.824 1.792-2.848 8.8-18.304 5.92-40.704-9.664-55.424L399.936 139.744c-19.264-18.208-49.632-17.344-67.872 1.888-18.208 19.264-17.376 49.632 1.888 67.872l316.96 299.84-315.712 304.288c-19.072 18.4-19.648 48.768-1.248 67.872 9.408 9.792 21.984 14.688 34.56 14.688 12 0 24-4.48 33.312-13.44l350.048-337.376c0.672-0.672 0.928-1.6 1.6-2.304 0.512-0.48 1.056-0.832 1.568-1.344C757.76 538.88 759.2 535.392 761.056 532.128z" fill="#5e7a88"></path>
+                    </g>
+                </g>
+                </svg>
+            </span>
+            <div class="calendar-info" @click="changeYear">
+                <!-- {{monthString}} -->
+                <div class="month">
+                    <div class="month-inner" :style="{'top':-(this.month*20)+'px'}">
+                        <span v-for="m in months">{{m}}</span>
+                    </div>
+                </div>
+                <div class="year">{{year}}</div>
+            </div>
+        </div>
+        <table cellpadding="5">
+        <thead>
+            <tr>
+                <td v-for="week in weeks" class="week">{{week}}</td>
+            </tr>
+        </thead>
+        <tr v-for="(day,k1) in days">
+            <td v-for="(child,k2) in day" :class="{'selected':child.selected,'disabled':child.disabled}" @click="select(k1,k2,$event)">
+                <span :class="{'red':k2==0||k2==6||((child.isLunarFestival||child.isGregorianFestival) && lunar)}">{{child.day}}</span>
+                <div class="text" v-if="child.eventName!=undefined">{{child.eventName}}</div>
+                <div class="text" :class="{'isLunarFestival':child.isLunarFestival,'isGregorianFestival':child.isGregorianFestival}" v-if="lunar">{{child.lunar}}</div>
+            </td>
+        </tr>
+        </table>
+
+        <div class="calendar-years" :class="{'show':yearsShow}">
+            <span v-for="y in years" @click="selectYear(y)" :class="{'active':y==year}">{{y}}</span>
+        </div>
  
     </div>
 </template>
@@ -105,6 +107,8 @@ export default {
     },
     data() {
         return {
+            years:[],
+            yearsShow:false,
             year: 0,
             month: 0,
             day: 0,
@@ -401,6 +405,21 @@ export default {
                 this.$emit('select',[this.year,this.zero?this.zeroPad(this.month + 1):this.month + 1,this.zero?this.zeroPad(this.days[k1][k2].day):this.days[k1][k2].day])
             }
         },
+        changeYear(){
+            if(this.yearsShow){
+                this.yearsShow=false
+                return false
+            }
+            this.yearsShow=true
+            this.years=[];
+            for(let i=~~this.year-10;i<~~this.year+10;i++){
+                this.years.push(i)
+            }
+        },
+        selectYear(value){
+            this.yearsShow=false
+            this.year=value
+        },
         // 日期补零
         zeroPad(n){
             return String(n < 10 ? '0' + n : n)
@@ -513,7 +532,7 @@ export default {
     font-size: 16px;
     line-height:26px;
     margin:0px auto;
-    border-radius:2px;
+    border-radius:20px;
 }
 .calendar td:not(.selected) span:not(.red):hover{
     background:#f3f8fa;
@@ -536,7 +555,7 @@ export default {
     left:0;
     width:40px;
     text-align: center;
-    border-radius: 2px;
+    
     padding:2px;
     font-size:8px;
     line-height: 1.2;
@@ -580,5 +599,42 @@ export default {
 .calendar-button span.cancel{
     background:#efefef;
     color:#666;
+}
+.calendar-years{
+    position: absolute;
+    left:0px;
+    top:60px;
+    right:0px;
+    bottom:0px;
+    background:#fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap:wrap;
+    overflow: auto;
+    transition:all .5s cubic-bezier(0.075, 0.82, 0.165, 1);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+}
+.calendar-years.show{
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0px);
+}
+.calendar-years>span{
+    margin:1px 5px;
+    display: inline-block;
+    width:60px;
+    line-height: 30px;
+    border-radius: 20px;
+    text-align:center;
+    border:1px solid #fbfbfb;
+    color:#999;
+}
+.calendar-years>span.active{
+    border:1px solid #5e7a88;
+    background-color: #5e7a88;
+    color:#fff; 
 }
 </style>
