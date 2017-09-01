@@ -1,6 +1,5 @@
 <template>
     <div class="calendar">
- 
         <div class="calendar-tools">
             <span class="calendar-prev" @click="prev">
                 <svg width="20" height="20" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -36,13 +35,15 @@
                 <td v-for="week in weeks" class="week">{{week}}</td>
             </tr>
         </thead>
-        <tr v-for="(day,k1) in days">
+        <tbody>
+        <tr v-for="(day,k1) in days" style="{'animation-delay',(k1*30)+'ms'}">
             <td v-for="(child,k2) in day" :class="{'selected':child.selected,'disabled':child.disabled}" @click="select(k1,k2,$event)">
                 <span :class="{'red':k2==0||k2==6||((child.isLunarFestival||child.isGregorianFestival) && lunar)}">{{child.day}}</span>
                 <div class="text" v-if="child.eventName!=undefined">{{child.eventName}}</div>
                 <div class="text" :class="{'isLunarFestival':child.isLunarFestival,'isGregorianFestival':child.isGregorianFestival}" v-if="lunar">{{child.lunar}}</div>
             </td>
         </tr>
+        </tbody>
         </table>
 
         <div class="calendar-years" :class="{'show':yearsShow}">
@@ -191,10 +192,10 @@ export default {
             let seletSplit = this.value
             let i, line = 0,temp = [],nextMonthPushDays = 1
             for (i = 1; i <= lastDateOfMonth; i++) {
-                let dow = new Date(y, m, i).getDay()
+                let day = new Date(y, m, i).getDay() //返回星期几（0～6）
                 let k
                 // 第一行
-                if (dow == 0) {
+                if (day == 0) {
                     temp[line] = []
                 } else if (i == 1) {
                     temp[line] = []
@@ -203,8 +204,8 @@ export default {
                         // console.log("第一行",lunarYear,lunarMonth,lunarValue,lunarInfo)
                         temp[line].push(Object.assign(
                             {day: k,disabled: true},
-                            this.getLunarInfo(this.month==0?this.year-1:this.year,this.month==0?12:this.month,k),
-                            this.getEvents(this.month==0?this.year-1:this.year,this.month==0?12:this.month,k),
+                            this.getLunarInfo(this.computedPrevYear(),this.computedPrevMonth(true),k),
+                            this.getEvents(this.computedPrevYear(),this.computedPrevMonth(true),k),
                         ))
                         k++;
                     }
@@ -281,35 +282,78 @@ export default {
                     }
                 }
                 // 最后一行
-                if (dow == 6) {
+                if (day == 6 && line<4) {
                     line++
-                } else if (i == lastDateOfMonth) {
+                }else if (i == lastDateOfMonth) {
+                    // line++
                     let k = 1
-                    for (dow; dow < 6; dow++) {
-                        // console.log("最后一行",lunarYear,lunarMonth,lunarValue,lunarInfo)
+                    for (let d=day; d < 6; d++) {
+                         // console.log(this.computedNextYear()+"-"+this.computedNextMonth(true)+"-"+k)
                         temp[line].push(Object.assign(
                             {day: k,disabled: true},
-                            this.getLunarInfo(this.month+2>11?this.year+1:this.year,this.month+2>11?1:this.month+2,k),
-                            this.getEvents(this.month+2>11?this.year+1:this.year,this.month+2>11?1:this.month+2,k),
+                            this.getLunarInfo(this.computedNextYear(),this.computedNextMonth(true),k),
+                            this.getEvents(this.computedNextYear(),this.computedNextMonth(true),k),
                         ))
                         k++
                     }
                     nextMonthPushDays=k
                 }
             } //end for
- 
+
+            // console.log(this.year+"/"+this.month+"/"+this.day+":"+line)
             // 补充第六行让视觉稳定
-            if(line >=4){
-                temp[5] = []
+            if(line<5 && nextMonthPushDays>0){
+                line++
+                temp[line] = []
                 for (let d=nextMonthPushDays; d <= nextMonthPushDays+6; d++) {
-                    temp[5].push(Object.assign(
+                    temp[line].push(Object.assign(
                         {day: d,disabled: true},
-                        this.getLunarInfo(this.month+2>11?this.year+1:this.year,this.month+2>11?1:this.month+2,d),
-                        this.getEvents(this.month+2>11?this.year+1:this.year,this.month+2>11?1:this.month+2,d),
+                        this.getLunarInfo(this.computedNextYear(),this.computedNextMonth(true),d),
+                        this.getEvents(this.computedNextYear(),this.computedNextMonth(true),d),
                     ))
                 } 
             }
             this.days = temp
+        },
+        computedPrevYear(){
+            let value=this.year
+            if(this.month-1<0){
+                value--
+            }
+            return value
+        },
+        computedPrevMonth(isString){
+            let value=this.month
+            if(this.month-1<0){
+                value=11
+            }else{
+                value--
+            }
+            // 用于显示目的（一般月份是从0开始的）
+            if(isString){
+                return value+1
+            }
+            return value
+        },
+        computedNextYear(){
+            let value=this.year
+            if(this.month+1>11){
+                value++
+            }
+            return value
+        },
+        computedNextMonth(isString){
+            let value=this.month
+            if(this.month+1>11){
+                value=0
+            }else{
+                value++
+            }
+            // 用于显示目的（一般月份是从0开始的）
+            if(isString){
+                return value+1
+            }
+            return value
         },
         // 获取农历信息
         getLunarInfo(y,m,d){
@@ -535,6 +579,7 @@ export default {
     pointer-events:none !important;
     cursor: default !important;
 }
+
 .calendar td.disabled div{
     color: #ccc;
 }
