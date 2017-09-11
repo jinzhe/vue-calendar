@@ -10,6 +10,7 @@
         <div>
             <span>单选/英文/事件</span>
             <calendar :events="calendar1.events" :lunar="calendar1.lunar" :value="calendar1.value" :begin="calendar1.begin" :end="calendar1.end" :weeks="calendar1.weeks" :months="calendar1.months" @select="calendar1.select"></calendar>
+            <button @click="changeEvents">异步更新Price</button>
         </div>
 
         <div>
@@ -58,11 +59,12 @@ export default {
                 },
                 select(value){
                     console.log(value.toString());
-                }
+                },
+                timestamp:Date.now()
             },
             calendar2:{
                 range:true,
-                value:[[2018,2,16],[2019,2,16]], //默认日期
+                value:[[2017,12,1],[2019,2,16]], //默认日期
                 lunar:true, //显示农历
                 begin:[2017,2,16], //可选开始日期
                 end:[2019,2,16], //可选结束日期
@@ -117,6 +119,13 @@ export default {
         },
         closeByDialog(){
             this.calendar4.show=false;
+        },
+        changeEvents(){
+            this.calendar1.events={
+                '2018-2-14':'$'+(Math.random()*1000>>0),
+                '2018-2-15':'$'+(Math.random()*1000>>0),
+                '2018-2-16':'$'+(Math.random()*1000>>0),
+            }
         }
     }
 }

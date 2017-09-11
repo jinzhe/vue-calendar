@@ -151,6 +151,11 @@ export default {
             rangeEnd:[],
         }
     },
+    watch:{
+        events(){
+            this.render(this.year,this.month)
+        }
+    },
     mounted() {
         this.init()
     },
