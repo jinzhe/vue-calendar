@@ -19,7 +19,7 @@
                 </g>
                 </svg>
             </span>
-            <div class="calendar-info" @click="changeYear">
+            <div class="calendar-info" @click.stop="changeYear">
                 <!-- {{monthString}} -->
                 <div class="month">
                     <div class="month-inner" :style="{'top':-(this.month*20)+'px'}">
@@ -47,7 +47,7 @@
         </table>
 
         <div class="calendar-years" :class="{'show':yearsShow}">
-            <span v-for="y in years" @click="selectYear(y)" :class="{'active':y==year}">{{y}}</span>
+            <span v-for="y in years" @click.stop="selectYear(y)" :class="{'active':y==year}">{{y}}</span>
         </div>
  
     </div>
@@ -481,6 +481,7 @@ export default {
         selectYear(value){
             this.yearsShow=false
             this.year=value
+            this.render(this.year,this.month);
         },
         // 日期补零
         zeroPad(n){
