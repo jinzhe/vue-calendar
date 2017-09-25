@@ -287,7 +287,7 @@ export default {
                     }
                 }
                 // 最后一行
-                if (day == 6 && line<4) {
+                if (day == 6 && i<lastDateOfMonth) {
                     line++
                 }else if (i == lastDateOfMonth) {
                     // line++
