@@ -286,8 +286,8 @@ export default {
                         temp[line].push(options)
                     }
                 }
-                // 最后一行
-                if (day == 6 && line<4) {
+                // 到周六换行
+                if (day == 6 && i < lastDateOfMonth) {
                     line++
                 }else if (i == lastDateOfMonth) {
                     // line++
@@ -301,22 +301,26 @@ export default {
                         ))
                         k++
                     }
+                    // 下个月除了补充的前几天开始的日期
                     nextMonthPushDays=k
                 }
             } //end for
 
             // console.log(this.year+"/"+this.month+"/"+this.day+":"+line)
             // 补充第六行让视觉稳定
-            if(line<5 && nextMonthPushDays>0){
-                line++
-                temp[line] = []
-                for (let d=nextMonthPushDays; d <= nextMonthPushDays+6; d++) {
-                    temp[line].push(Object.assign(
-                        {day: d,disabled: true},
-                        this.getLunarInfo(this.computedNextYear(),this.computedNextMonth(true),d),
-                        this.getEvents(this.computedNextYear(),this.computedNextMonth(true),d),
-                    ))
-                } 
+            if(line<=6 && nextMonthPushDays>0){
+                // console.log({nextMonthPushDays:nextMonthPushDays,line:line})
+                for (let i = line+1; i<=6; i++) {
+                    temp[i] = []
+                    let start=nextMonthPushDays+(i-line-1)*7
+                    for (let d=start; d <= start+6; d++) {
+                        temp[i].push(Object.assign(
+                            {day: d,disabled: true},
+                            this.getLunarInfo(this.computedNextYear(),this.computedNextMonth(true),d),
+                            this.getEvents(this.computedNextYear(),this.computedNextMonth(true),d),
+                        ))
+                    }  
+                }
             }
             this.days = temp
         },
@@ -540,8 +544,10 @@ export default {
 }
 .calendar-info>div.month .month-inner>span{
     display: block;
+    font-size: 14px;
     height:20px;
     width:100px;
+    overflow: hidden;
     text-align: center;
 }
 .calendar-info>div.year{
@@ -617,7 +623,7 @@ export default {
     position: absolute;
     top:28px;
     left:0;
-    width:40px;
+    right:0;
     text-align: center;
     
     padding:2px;

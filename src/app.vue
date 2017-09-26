@@ -50,12 +50,14 @@ export default {
     data(){
         return {
             calendar1:{
-                value:[2018,2,16], //默认日期
+                value:[2017,7,20], //默认日期
                 // lunar:true, //显示农历
                 weeks:['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
                 months:['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
                 events:{
-                    '2018-2-14':'$408','2018-2-15':'$460','2018-2-16':'$500',
+                    '2017-7-20':'$408',
+                    '2017-7-21':'$460',
+                    '2017-7-22':'$500',
                 },
                 select(value){
                     console.log(value.toString());
@@ -122,9 +124,9 @@ export default {
         },
         changeEvents(){
             this.calendar1.events={
-                '2018-2-14':'$'+(Math.random()*1000>>0),
-                '2018-2-15':'$'+(Math.random()*1000>>0),
-                '2018-2-16':'$'+(Math.random()*1000>>0),
+                '2017-7-20':'$'+(Math.random()*1000>>0),
+                '2017-7-21':'$'+(Math.random()*1000>>0),
+                '2017-7-22':'$'+(Math.random()*1000>>0),
             }
         }
     }
@@ -162,7 +164,8 @@ export default {
     position: absolute;
     left:0px;
     top:0px;
-    padding:2px 10px;
+    padding:5px 10px;
+    font-family: "PingFang SC","Hiragino Sans GB","STHeiti","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
     font-size:10px;
     border-radius:0 0 2px 0;
     background:#ea6151;
