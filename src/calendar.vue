@@ -286,13 +286,8 @@ export default {
                         temp[line].push(options)
                     }
                 }
-<<<<<<< HEAD
                 // 到周六换行
                 if (day == 6 && i < lastDateOfMonth) {
-=======
-                // 最后一行
-                if (day == 6 && i<lastDateOfMonth) {
->>>>>>> origin/master
                     line++
                 }else if (i == lastDateOfMonth) {
                     // line++
