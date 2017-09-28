@@ -308,9 +308,9 @@ export default {
 
             // console.log(this.year+"/"+this.month+"/"+this.day+":"+line)
             // 补充第六行让视觉稳定
-            if(line<=6 && nextMonthPushDays>0){
+            if(line<=5 && nextMonthPushDays>0){
                 // console.log({nextMonthPushDays:nextMonthPushDays,line:line})
-                for (let i = line+1; i<=6; i++) {
+                for (let i = line+1; i<=5; i++) {
                     temp[i] = []
                     let start=nextMonthPushDays+(i-line-1)*7
                     for (let d=start; d <= start+6; d++) {
