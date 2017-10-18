@@ -450,6 +450,8 @@ export default {
                     }else{
                         begin=this.rangeBegin
                         end=this.rangeEnd
+                        begin[1]++
+                        end[1]++
                     }
                     // console.log("选中日期",begin,end)
                     this.$emit('select',begin,end)
