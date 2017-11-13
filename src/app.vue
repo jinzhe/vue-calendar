@@ -4,6 +4,7 @@
         <div>
             <span>弹出框</span>
             <input type="text" @click="openByDrop($event)" v-model="calendar3.display" readonly>
+            <input type="text" @click="openMultiByDrop($event)" v-model="calendar5.display" readonly>
             <input type="text" @click="openByDialog" :value="calendar4.display" readonly>
         </div>
 
@@ -22,6 +23,12 @@
     <transition name="fade">
     <div class="calendar-dropdown" :style="{'left':calendar3.left+'px','top':calendar3.top+'px'}" v-if="calendar3.show">
         <calendar :zero="calendar3.zero" :lunar="calendar3.lunar" :value="calendar3.value" :begin="calendar3.begin" :end="calendar3.end" @select="calendar3.select"></calendar>
+    </div>
+    </transition>
+
+    <transition name="fade">
+    <div class="calendar-dropdown" :style="{'left':calendar5.left+'px','top':calendar5.top+'px'}" v-if="calendar5.show">
+        <calendar :zero="calendar5.zero" :lunar="calendar5.lunar" :value="calendar5.value" :multi="calendar5.multi" @select="calendar5.select"></calendar>
     </div>
     </transition>
 
@@ -100,6 +107,25 @@ export default {
                     this.calendar4.display=begin.join("/")+" ~ "+end.join("/");
                 }
             },
+            // 多选
+            calendar5:{
+                display:"",
+                multi:true,
+                show:false,
+                zero:true,
+                value:[], //默认日期
+                lunar:true, //显示农历
+                select:(value)=>{
+                    let displayValue=[]
+                    value.forEach(v=>{
+                        displayValue.push(v[0]+"/"+(v[1]+1)+"/"+v[2])
+                    })
+                    this.calendar5.display=displayValue.join(",");
+                    // this.calendar5.show=false;
+                    this.calendar5.value=value;
+                    
+                }
+            },
         }
     },
     methods:{
@@ -121,6 +147,18 @@ export default {
         },
         closeByDialog(){
             this.calendar4.show=false;
+        },
+        openMultiByDrop(e){
+            this.calendar5.show=true;
+            this.calendar5.left=e.target.offsetLeft+19;
+            this.calendar5.top=e.target.offsetTop+70;
+            e.stopPropagation();
+            window.setTimeout(()=>{
+                document.addEventListener("click",(e)=>{
+                    this.calendar5.show=false;
+                    document.removeEventListener("click",()=>{},false);
+                },false);
+            },1000)
         },
         changeEvents(){
             this.calendar1.events={

@@ -87,6 +87,10 @@ export default {
             type: Boolean,
             default: false
         },
+        multi: {
+            type: Boolean,
+            default: false
+        },
         weeks: {
             type: Array,
             default:function(){
@@ -114,6 +118,7 @@ export default {
             month: 0,
             day: 0,
             days: [],
+            multiDays:[],
             today: [],
             festival:{
                 lunar:{
@@ -179,7 +184,8 @@ export default {
 
                     this.rangeBegin = [this.year, this.month,this.day]
                     this.rangeEnd = [year2, month2 , day2]
-                    // console.log(this.month,this.rangeBegin,this.rangeEnd)
+                }else if(this.multi){//多选
+                    this.multiDays=this.value;
                 }else{
                     this.year = parseInt(this.value[0])
                     this.month = parseInt(this.value[1]) - 1
@@ -216,8 +222,8 @@ export default {
                     }
                 }
        
-                // 范围
-                if (this.range) {
+                
+                if (this.range) { // 范围
                     // console.log("日期范围",this.getLunarInfo(this.year,this.month+1,i))
                     let options = Object.assign(
                         {day: i},
@@ -241,9 +247,27 @@ export default {
                         if (endTime <  Number(new Date(this.year, this.month, i))) options.disabled = true
                     }
                     temp[line].push(options)
-                } else {
+                }else if(this.multi){//多选
+                    let options
+                    // 判断是否选中
+                    if( this.value.filter(v => v.join("") == [this.year,this.month,i].join("")).length>0 ){
+                        options = Object.assign({day: i,selected:true},this.getLunarInfo(this.year,this.month+1,i),this.getEvents(this.year,this.month+1,i))
+                    }else{
+                        options = Object.assign({day: i,selected:false},this.getLunarInfo(this.year,this.month+1,i),this.getEvents(this.year,this.month+1,i))
+                        if (this.begin.length>0) {
+                            let beginTime = Number(new Date(parseInt(this.begin[0]),parseInt(this.begin[1]) - 1,parseInt(this.begin[2])))
+                            if (beginTime > Number(new Date(this.year, this.month, i))) options.disabled = true
+                        }
+                        if (this.end.length>0){
+                            let endTime = Number(new Date(parseInt(this.end[0]),parseInt(this.end[1]) - 1,parseInt(this.end[2])))
+                            if (endTime <  Number(new Date(this.year, this.month, i))) options.disabled = true
+                        }
+                    }
+                    
+                    temp[line].push(options)
+                } else { // 单选
                      // console.log(this.lunar(this.year,this.month,i));
-                    // 单选模式
+                    
                     let chk = new Date()
                     let chkY = chk.getFullYear()
                     let chkM = chk.getMonth()
@@ -450,13 +474,21 @@ export default {
                     }else{
                         begin=this.rangeBegin
                         end=this.rangeEnd
-                        begin[1]++
-                        end[1]++
                     }
                     // console.log("选中日期",begin,end)
                     this.$emit('select',begin,end)
                 }
                 this.render(this.year, this.month)
+            }else if (this.multi) {
+                // 如果已经选过则过滤掉
+                let filterDay=this.multiDays.filter(v => v.join("")==[this.year,this.month,this.days[k1][k2].day].join(""))
+                if( filterDay.length>0 ){
+                    this.multiDays=this.multiDays.filter(v=> v.join("")!=[this.year,this.month,this.days[k1][k2].day].join(""))
+                }else{
+                    this.multiDays.push([this.year,this.month,this.days[k1][k2].day]);
+                }
+                this.days[k1][k2].selected = !this.days[k1][k2].selected
+                this.$emit('select',this.multiDays)
             } else {
                 // 取消上次选中
                 if (this.today.length > 0) {
@@ -593,7 +625,6 @@ export default {
     pointer-events:none !important;
     cursor: default !important;
 }
-
 .calendar td.disabled div{
     color: #ccc;
 }
