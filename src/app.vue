@@ -12,6 +12,7 @@
             <span>单选/英文/事件</span>
             <calendar :events="calendar1.events" :lunar="calendar1.lunar" :value="calendar1.value" :begin="calendar1.begin" :end="calendar1.end" :weeks="calendar1.weeks" :months="calendar1.months" @select="calendar1.select"></calendar>
             <button @click="changeEvents">异步更新Price</button>
+            <button @click="calendar1.value=[2018,1,Math.floor(Math.random()*30+1)]">动态设置日期</button>
         </div>
 
         <div>

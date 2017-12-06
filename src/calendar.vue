@@ -391,6 +391,9 @@ export default {
     watch:{
         events(){
             this.render(this.year,this.month)
+        },
+        value(){
+            this.init();
         }
     },
     mounted() {
