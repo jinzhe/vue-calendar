@@ -28,7 +28,7 @@
 
     <transition name="fade">
     <div class="calendar-dropdown" :style="{'left':calendar5.left+'px','top':calendar5.top+'px'}" v-if="calendar5.show">
-        <calendar :zero="calendar5.zero" :lunar="calendar5.lunar" :value="calendar5.value" :multi="calendar5.multi" @select="calendar5.select"></calendar>
+        <calendar :zero="calendar5.zero" :disabled="calendar5.disabled" :lunar="calendar5.lunar" :value="calendar5.value" :multi="calendar5.multi" @select="calendar5.select"></calendar>
     </div>
     </transition>
 
@@ -62,6 +62,7 @@ export default {
                 weeks:['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
                 months:['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
                 events:{
+                    '2017-7-7':'$408',
                     '2017-7-20':'$408',
                     '2017-7-21':'$460',
                     '2017-7-22':'$500',
@@ -109,16 +110,17 @@ export default {
             },
             // 多选
             calendar5:{
-                display:"",
+                display:"2017/11/2,2017/12/2",
                 multi:true,
                 show:false,
                 zero:true,
-                value:[], //默认日期
+                value:[[2017,11,2],[2017,12,2]], //默认日期
+                disabled:[[2017,12,24],[2017,12,25]], //默认日期
                 lunar:true, //显示农历
                 select:(value)=>{
                     let displayValue=[]
                     value.forEach(v=>{
-                        displayValue.push(v[0]+"/"+(v[1]+1)+"/"+v[2])
+                        displayValue.push(v[0]+"/"+(v[1])+"/"+v[2])
                     })
                     this.calendar5.display=displayValue.join(",");
                     // this.calendar5.show=false;
