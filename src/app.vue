@@ -115,14 +115,16 @@ export default {
                 multi:true,
                 show:false,
                 zero:true,
-                value:[[2017,11,2],[2017,12,2]], //默认日期
+                value:[[2017,11,1],[2017,11,2]], //默认日期
                 disabled:[[2017,12,24],[2017,12,25]], //默认日期
                 lunar:true, //显示农历
                 select:(value)=>{
+
                     let displayValue=[]
                     value.forEach(v=>{
                         displayValue.push(v[0]+"/"+(v[1])+"/"+v[2])
                     })
+                    console.log(displayValue);
                     this.calendar5.display=displayValue.join(",");
                     // this.calendar5.show=false;
                     this.calendar5.value=value;
