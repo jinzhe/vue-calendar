@@ -400,15 +400,13 @@ export default {
         this.init()
     },
     methods: {
-        // 初始化一些东西
         init(){
             let now = new Date();
-             // 没有默认值
             this.year = now.getFullYear()
             this.month = now.getMonth()
             this.day = now.getDate()
             if (this.value.length>0) {
-                if (this.range) {
+                if (this.range) { //范围
                     this.year = parseInt(this.value[0][0])
                     this.month = parseInt(this.value[0][1]) - 1
                     this.day = parseInt(this.value[0][2]) 
@@ -424,7 +422,7 @@ export default {
                     this.year = parseInt(this.value[0][0])
                     this.month = parseInt(this.value[0][1]) - 1
                     this.day = parseInt(this.value[0][2]) 
-                }else{
+                }else{ //单选
                     this.year = parseInt(this.value[0])
                     this.month = parseInt(this.value[1]) - 1
                     this.day = parseInt(this.value[2]) 
@@ -665,12 +663,11 @@ export default {
         getEvents(y,m,d){
             if(Object.keys(this.events).length==0)return false;
             let eventName=this.events[y+"-"+m+"-"+d]
+            let data={}
             if(eventName!=undefined){
-                return {
-                    eventName:eventName
-                }
+                data.eventName=eventName
             }
-            return {}
+            return data
         },
         // 上月
         prev(e) {
@@ -682,6 +679,8 @@ export default {
                 this.month = parseInt(this.month) - 1
             }
             this.render(this.year, this.month)
+            this.$emit('selectMonth',this.month+1,this.year)
+            this.$emit('prev',this.month+1,this.year)
         },
         //  下月
         next(e) {
@@ -693,6 +692,8 @@ export default {
                 this.month = parseInt(this.month) + 1
             }
             this.render(this.year, this.month)
+            this.$emit('selectMonth',this.month+1,this.year)
+            this.$emit('next',this.month+1,this.year)
         },
         // 选中日期
         select(k1, k2, e) {
@@ -777,7 +778,29 @@ export default {
         selectYear(value){
             this.yearsShow=false
             this.year=value
-            this.render(this.year,this.month);
+            this.render(this.year,this.month)
+            this.$emit('selectYear',value)
+        },
+        // 返回今天
+        setToday(){
+            let now = new Date();
+            this.year = now.getFullYear()
+            this.month = now.getMonth()
+            this.day = now.getDate()
+            this.render(this.year,this.month)
+            // 遍历当前日找到选中
+            this.days.forEach(v => {
+                let day=v.find(vv => {
+                    return vv.day==this.day
+                })
+                if(day!=undefined){
+                  day.selected=true  
+                }
+                
+            })
+ 
+
+            this.$forceUpdate()
         },
         // 日期补零
         zeroPad(n){
