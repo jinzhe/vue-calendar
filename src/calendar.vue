@@ -791,16 +791,13 @@ export default {
             // 遍历当前日找到选中
             this.days.forEach(v => {
                 let day=v.find(vv => {
-                    return vv.day==this.day
+                    return vv.day==this.day && !vv.disabled
                 })
-                if(day!=undefined){
+                if(day!=undefined ){
                   day.selected=true  
                 }
                 
             })
- 
-
-            this.$forceUpdate()
         },
         // 日期补零
         zeroPad(n){
