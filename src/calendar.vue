@@ -730,6 +730,9 @@ export default {
                         begin=this.rangeBegin
                         end=this.rangeEnd
                     }
+                    //这边因为返回的数组 所以要加上1 统一返回 不然对使用之来说真的太不友好了
+                    begin[1]=begin[1]+1;
+                    end[1]=end[1]+1;
                     // console.log("选中日期",begin,end)
                     this.$emit('select',begin,end)
                 }
