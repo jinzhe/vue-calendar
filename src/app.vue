@@ -31,6 +31,19 @@
             <span>多选/农历</span>
             <calendar :range="calendar2.range" :lunar="calendar2.lunar" :value="calendar2.value" :begin="calendar2.begin" :end="calendar2.end" @select="calendar2.select"></calendar>
         </div>
+        
+        <div>
+            <span>封装后的一个组件  直接调用</span>
+            <datepicker showtype="drop" choosetype="simple" v-model="nowdate" :display="nowdate"></datepicker>
+            
+            showtype 包含 : drop点击下拉   dailog 点击弹窗  inner 直接嵌套在网页里面
+            
+            choosetype 包含三个值  simple 单选  range 范围选择  multi 多选
+            
+            其他参数同 没有封装前一样使用
+            
+        </div>
+        
     </div>
 
     <transition name="fade">
@@ -69,6 +82,7 @@ export default {
     },
     data(){
         return {
+            nowdate:'',
             calendar1:{
                 value:[2017,7,20], //默认日期
                 // lunar:true, //显示农历
